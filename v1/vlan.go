@@ -31,7 +31,7 @@ type VlanGetResponse struct {
 	VmProvisioning      bool                          `json:"vm_provisioning"`
 }
 
-// TODO: maybe refactor this for other endpoitns to be reused
+// TODO: extract shared location response model used by multiple endpoints.
 type VlanGetResponseLocationItem struct {
 	Identifier string `json:"identifier"`
 	Code       string `json:"code"`
