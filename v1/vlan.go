@@ -88,33 +88,34 @@ func NewVlansClient(transport *internal.Transport) *VlansClient {
 func (v *VlansClient) Create(ctx context.Context, request VlanCreateRequest) (VlanCreateResponse, error) {
 	resp := VlanCreateResponse{}
 	err := v.transport.Post(ctx, "/api/vlan/v1/vlan.json", request, &resp)
-	return resp, err
+	return resp, mapTransportError(err)
 }
 
 func (v *VlansClient) Get(ctx context.Context, identifier string) (VlanGetResponse, error) {
 	resp := VlanGetResponse{}
 	err := v.transport.Get(ctx, fmt.Sprintf("api/vlan/v1/vlan.json/%s", identifier), &resp, nil)
-	return resp, err
+	return resp, mapTransportError(err)
 }
 
 func (v *VlansClient) Update(ctx context.Context, identifier string, request VlanUpdateRequest) (VlanUpdateResponse, error) {
 	resp := VlanUpdateResponse{}
 	err := v.transport.Put(ctx, fmt.Sprintf("/api/vlan/v1/vlan.json/%s", identifier), request, &resp)
-	return resp, err
+	return resp, mapTransportError(err)
 }
 
 func (v *VlansClient) List(ctx context.Context, params VlanListParams) (paging.PagedResponse[VlanListItem], error) {
 	resp := internal.RequestWrapper[paging.PagedResponse[VlanListItem]]{}
 	err := v.transport.Get(ctx, "/api/vlan/v1/vlan.json", &resp, params)
-	return resp.Data, err
+	return resp.Data, mapTransportError(err)
 }
 
 func (v *VlansClient) ListFiltered(ctx context.Context, params VlanFilteredParams) (paging.PagedResponse[VlanListItem], error) {
 	resp := internal.RequestWrapper[paging.PagedResponse[VlanListItem]]{}
 	err := v.transport.Get(ctx, "/api/vlan/v1/vlan/filtered.json", &resp, params)
-	return resp.Data, err
+	return resp.Data, mapTransportError(err)
 }
 
 func (v *VlansClient) Delete(ctx context.Context, identifier string) error {
-	return v.transport.Delete(ctx, fmt.Sprintf("/api/vlan/v1/vlan.json/%s", identifier))
+	err := v.transport.Delete(ctx, fmt.Sprintf("/api/vlan/v1/vlan.json/%s", identifier))
+	return mapTransportError(err)
 }

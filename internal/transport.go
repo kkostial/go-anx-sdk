@@ -19,7 +19,7 @@ type TransportError struct {
 }
 
 func (a *TransportError) Error() string {
-	return fmt.Sprintf("api error: StatusCode=%d, Status=%s, Body=%s", a.StatusCode, a.Status, a.Body)
+	return fmt.Sprintf("transport error: StatusCode=%d, Status=%s, Body=%s", a.StatusCode, a.Status, a.Body)
 }
 
 type Transport struct {

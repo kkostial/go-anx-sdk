@@ -36,5 +36,5 @@ func NewLocationsClient(transport *internal.Transport) *LocationsClient {
 func (v *LocationsClient) List(ctx context.Context, params LocationListParams) (paging.PagedResponse[LocationListItem], error) {
 	resp := internal.RequestWrapper[paging.PagedResponse[LocationListItem]]{}
 	err := v.transport.Get(ctx, "/api/core/v1/location.json", &resp, params)
-	return resp.Data, err
+	return resp.Data, mapTransportError(err)
 }
