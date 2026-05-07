@@ -99,7 +99,7 @@ func (v *VlansClient) Get(ctx context.Context, identifier string) (VlanGetRespon
 
 func (v *VlansClient) Update(ctx context.Context, identifier string, request VlanUpdateRequest) (VlanUpdateResponse, error) {
 	resp := VlanUpdateResponse{}
-	err := v.transport.Put(ctx, fmt.Sprintf("api/vlan/v1/vlan.json/%s", identifier), request, &resp)
+	err := v.transport.Put(ctx, fmt.Sprintf("/api/vlan/v1/vlan.json/%s", identifier), request, &resp)
 	return resp, err
 }
 
@@ -116,5 +116,5 @@ func (v *VlansClient) Filtered(ctx context.Context, params VlanFilteredParams) (
 }
 
 func (v *VlansClient) Delete(ctx context.Context, identifier string) error {
-	return v.transport.Delete(ctx, fmt.Sprintf("api/vlan/v1/vlan.json/%s", identifier))
+	return v.transport.Delete(ctx, fmt.Sprintf("/api/vlan/v1/vlan.json/%s", identifier))
 }
