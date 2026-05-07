@@ -135,7 +135,7 @@ func TestTransport_Do_APIError(t *testing.T) {
 	// assert
 	require.Error(err)
 
-	var apiErr *ApiError
+	var apiErr *TransportError
 	require.ErrorAs(err, &apiErr)
 
 	assert.Equal(400, apiErr.StatusCode)

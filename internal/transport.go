@@ -12,13 +12,13 @@ import (
 	"github.com/google/go-querystring/query"
 )
 
-type ApiError struct {
+type TransportError struct {
 	StatusCode int
 	Status     string
 	Body       string
 }
 
-func (a *ApiError) Error() string {
+func (a *TransportError) Error() string {
 	return fmt.Sprintf("api error: StatusCode=%d, Status=%s, Body=%s", a.StatusCode, a.Status, a.Body)
 }
 
@@ -88,7 +88,7 @@ func (t *Transport) Do(req *http.Request, response any) error {
 			return fmt.Errorf("reading response body: %w", err)
 		}
 
-		return &ApiError{
+		return &TransportError{
 			StatusCode: resp.StatusCode,
 			Status:     resp.Status,
 			Body:       string(body),
