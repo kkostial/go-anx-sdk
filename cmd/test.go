@@ -2,12 +2,15 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"net/http"
 	"os"
 
 	go_anx_sdk "code.anexia.com/se/ks/go-anx-sdk"
 	"code.anexia.com/se/ks/go-anx-sdk/config"
 	"code.anexia.com/se/ks/go-anx-sdk/utils"
+	v1 "code.anexia.com/se/ks/go-anx-sdk/v1"
 )
 
 func main() {
@@ -24,8 +27,12 @@ func main() {
 		config.WithHttpClient(httpClient),
 	)
 
-	err := client.V1().Vlans().Delete(ctx, "ff84f6df77ef408e843d1047668e04a5")
+	locations, err := client.V1().Locations().List(ctx, v1.LocationListParams{})
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
+	}
+
+	for _, l := range locations.Data {
+		fmt.Printf("%+v\n", l)
 	}
 }

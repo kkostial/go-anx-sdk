@@ -12,6 +12,10 @@ func NewClient(transport *internal.Transport) *Client {
 	}
 }
 
-func (c Client) Vlans() *VlansClient {
+func (c *Client) Vlans() *VlansClient {
 	return NewVlansClient(c.transport)
+}
+
+func (c *Client) Locations() *LocationsClient {
+	return NewLocationsClient(c.transport)
 }
