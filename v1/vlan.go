@@ -66,7 +66,7 @@ type VlanFilteredParams struct {
 	OrganizationIdentifier string `url:"organization_identifier,omitempty"`
 	RoleText               string `url:"role_text,omitempty"`
 	Status                 string `url:"status,omitempty"`
-	Location               string `url:"location,omitempty"`
+	LocationIdentifier     string `url:"location,omitempty"`
 }
 
 type VlanListItem struct {
