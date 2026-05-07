@@ -69,7 +69,7 @@ type VlanFilteredParams struct {
 	Location               string `url:"location,omitempty"`
 }
 
-type ListResponse struct {
+type VlanListItem struct {
 	Identifier          string `json:"identifier"`
 	Name                string `json:"name"`
 	DescriptionCustomer string `json:"description_customer"`
@@ -103,14 +103,14 @@ func (v *VlansClient) Update(ctx context.Context, identifier string, request Vla
 	return resp, err
 }
 
-func (v *VlansClient) List(ctx context.Context, params VlanListParams) (paging.PagedResponse[ListResponse], error) {
-	resp := internal.RequestWrapper[paging.PagedResponse[ListResponse]]{}
+func (v *VlansClient) List(ctx context.Context, params VlanListParams) (paging.PagedResponse[VlanListItem], error) {
+	resp := internal.RequestWrapper[paging.PagedResponse[VlanListItem]]{}
 	err := v.transport.Get(ctx, "/api/vlan/v1/vlan.json", &resp, params)
 	return resp.Data, err
 }
 
-func (v *VlansClient) Filtered(ctx context.Context, params VlanFilteredParams) (paging.PagedResponse[ListResponse], error) {
-	resp := internal.RequestWrapper[paging.PagedResponse[ListResponse]]{}
+func (v *VlansClient) ListFiltered(ctx context.Context, params VlanFilteredParams) (paging.PagedResponse[VlanListItem], error) {
+	resp := internal.RequestWrapper[paging.PagedResponse[VlanListItem]]{}
 	err := v.transport.Get(ctx, "/api/vlan/v1/vlan/filtered.json", &resp, params)
 	return resp.Data, err
 }
