@@ -27,7 +27,7 @@ func TestVlansClient_Create(t *testing.T) {
 
 		ValidateRequest: ExpectJSONBody(v1.VlanCreateRequest{
 			LocationIdentifier:  "loc-1",
-			VmProvisioning:      true,
+			VMProvisioning:      true,
 			DescriptionCustomer: "customer vlan",
 		}),
 	})
@@ -36,7 +36,7 @@ func TestVlansClient_Create(t *testing.T) {
 
 	resp, err := client.Create(context.Background(), v1.VlanCreateRequest{
 		LocationIdentifier:  "loc-1",
-		VmProvisioning:      true,
+		VMProvisioning:      true,
 		DescriptionCustomer: "customer vlan",
 	})
 

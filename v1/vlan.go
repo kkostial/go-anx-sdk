@@ -11,7 +11,7 @@ import (
 // VlanCreateRequest defines all fields available when creating a new vlan.
 type VlanCreateRequest struct {
 	LocationIdentifier  string `json:"location"`
-	VmProvisioning      bool   `json:"vm_provisioning"`
+	VMProvisioning      bool   `json:"vm_provisioning"`
 	DescriptionCustomer string `json:"description_customer"`
 }
 
@@ -31,7 +31,7 @@ type VlanGetResponse struct {
 	RoleText            string                        `json:"role_text"`
 	Status              string                        `json:"status"`
 	Locations           []VlanGetResponseLocationItem `json:"locations"`
-	VmProvisioning      bool                          `json:"vm_provisioning"`
+	VMProvisioning      bool                          `json:"vm_provisioning"`
 }
 
 // VlanGetResponseLocationItem represents a location in a full vlan response.
@@ -47,7 +47,7 @@ type VlanGetResponseLocationItem struct {
 
 // VlanUpdateRequest defines the possible values that can be updated in a vlan. Nil values are ignored.
 type VlanUpdateRequest struct {
-	VmProvisioning      *bool   `json:"vm_provisioning,omitempty"`
+	VMProvisioning      *bool   `json:"vm_provisioning,omitempty"`
 	DescriptionCustomer *string `json:"description_customer,omitempty"`
 }
 
