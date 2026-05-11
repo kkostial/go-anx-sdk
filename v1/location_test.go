@@ -2,65 +2,57 @@ package v1_test
 
 import (
 	"context"
-	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	v1 "code.anexia.com/se/ks/go-anx-sdk/v1"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
-
 	"code.anexia.com/se/ks/go-anx-sdk/internal"
+	v1 "code.anexia.com/se/ks/go-anx-sdk/v1"
+
+	"github.com/stretchr/testify/require"
 )
+
+func newLocationsClient(t *testing.T, ts *httptest.Server) *v1.LocationsClient {
+	t.Helper()
+	tr := internal.NewTransport(ts.URL, "token", ts.Client())
+	return v1.NewLocationsClient(tr)
+}
 
 func TestLocationsClient_List(t *testing.T) {
 	// arrange
-	require := require.New(t)
-	assert := assert.New(t)
+	ts := RunAPITest(t, APITestCase{
+		Method:  http.MethodGet,
+		Path:    "/api/core/v1/location.json",
+		Status:  http.StatusOK,
+		Fixture: LoadFixture(t, "testdata/locations/list_success.json"),
 
-	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		ValidateRequest: func(t *testing.T, r *http.Request) {
+			ExpectQuery(t, map[string]string{
+				"page":   "2",
+				"limit":  "50",
+				"search": "vienna",
+			})(r)
+		},
+	})
 
-		// API surface validation (this is the important part)
-		assert.Equal(http.MethodGet, r.Method)
-		assert.Equal("/api/core/v1/location.json", r.URL.Path)
-
-		assert.Equal("2", r.URL.Query().Get("page"))
-		assert.Equal("10", r.URL.Query().Get("limit"))
-		assert.Equal("vienna", r.URL.Query().Get("search"))
-
-		// mock API response (IMPORTANT: match real API shape)
-		w.WriteHeader(http.StatusOK)
-		_ = json.NewEncoder(w).Encode(map[string]any{
-			"data": map[string]any{
-				"data": []map[string]any{
-					{
-						"identifier": "loc-1",
-						"code":       "VIE",
-						"name":       "Vienna",
-					},
-				},
-			},
-		})
-	}))
-	defer ts.Close()
-
-	tr := internal.NewTransport(ts.URL, "token", ts.Client())
-	client := v1.NewLocationsClient(tr)
-
-	params := v1.LocationListParams{
-		Page:   2,
-		Limit:  10,
-		Search: "vienna",
-	}
+	client := newLocationsClient(t, ts)
 
 	// act
-	resp, err := client.List(context.Background(), params)
+	resp, err := client.List(context.Background(), v1.LocationListParams{
+		Page:   2,
+		Limit:  50,
+		Search: "vienna",
+	})
 
 	// assert
-	require.NoError(err)
+	require.NoError(t, err)
 
-	require.Len(resp.Data, 1)
-	assert.Equal("VIE", resp.Data[0].Code)
-	assert.Equal("Vienna", resp.Data[0].Name)
+	require.Equal(t, 2, resp.Page)
+	require.Equal(t, 50, resp.Limit)
+	require.NotEmpty(t, resp.Data)
+
+	first := resp.Data[0]
+	require.Equal(t, "loc-1", first.Identifier)
+	require.Equal(t, "VIE", first.Code)
+	require.Equal(t, "Vienna", first.Name)
 }

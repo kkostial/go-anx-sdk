@@ -1,0 +1,13 @@
+{
+  "data": {
+    "page": 2,
+    "limit": 50,
+    "data": [
+      {
+        "identifier": "loc-1",
+        "code": "VIE",
+        "name": "Vienna"
+      }
+    ]
+  }
+}

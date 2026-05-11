@@ -1,0 +1,5 @@
+{
+  "identifier": "vlan-id",
+  "name": "vlan-name",
+  "description_customer": "vlan description"
+}
