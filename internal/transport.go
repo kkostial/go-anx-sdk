@@ -106,31 +106,33 @@ func (t *Transport) Do(req *http.Request, response any) error {
 }
 
 func (t *Transport) Get(ctx context.Context, endpoint string, response any, params any) error {
-	return t.DoWithBody(ctx, "GET", endpoint, nil, response, params)
+	return t.DoWithBody(ctx, http.MethodGet, endpoint, nil, response, params)
 }
 
 func (t *Transport) Delete(ctx context.Context, endpoint string) error {
-	return t.DoWithBody(ctx, "DELETE", endpoint, nil, nil, nil)
+	return t.DoWithBody(ctx, http.MethodDelete, endpoint, nil, nil, nil)
 }
 
 func (t *Transport) Post(ctx context.Context, endpoint string, request any, response any) error {
-	return t.DoWithBody(ctx, "POST", endpoint, request, response, nil)
+	return t.DoWithBody(ctx, http.MethodPost, endpoint, request, response, nil)
 }
 
 func (t *Transport) Put(ctx context.Context, endpoint string, request any, response any) error {
-	return t.DoWithBody(ctx, "PUT", endpoint, request, response, nil)
+	return t.DoWithBody(ctx, http.MethodPut, endpoint, request, response, nil)
 }
 
 func (t *Transport) DoWithBody(ctx context.Context, method string, endpoint string, request any, response any, params any) error {
-	var body io.Reader = nil
+	var body io.Reader
 
 	if request != nil {
-		requestBytes, err := json.Marshal(request)
+		var reqBody bytes.Buffer
+
+		err := json.NewEncoder(&reqBody).Encode(request)
 		if err != nil {
 			return fmt.Errorf("marshalling request: %w", err)
 		}
 
-		body = bytes.NewBuffer(requestBytes)
+		body = &reqBody
 	}
 
 	req, err := t.NewRequest(ctx, method, endpoint, body, params)
