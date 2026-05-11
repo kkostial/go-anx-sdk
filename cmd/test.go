@@ -9,7 +9,7 @@ import (
 
 	go_anx_sdk "code.anexia.com/se/ks/go-anx-sdk"
 	"code.anexia.com/se/ks/go-anx-sdk/config"
-	"code.anexia.com/se/ks/go-anx-sdk/utils"
+	"code.anexia.com/se/ks/go-anx-sdk/internal/utils"
 	v1 "code.anexia.com/se/ks/go-anx-sdk/v1"
 )
 
