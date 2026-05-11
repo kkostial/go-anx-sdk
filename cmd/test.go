@@ -18,8 +18,9 @@ func main() {
 
 	apiKey := os.Getenv("API_KEY")
 
-	httpClient := http.DefaultClient
-	httpClient.Transport = debug.NewLoggingRoundTripper(httpClient.Transport)
+	httpClient := &http.Client{
+		Transport: debug.NewLoggingRoundTripper(http.DefaultTransport),
+	}
 
 	client := go_anx_sdk.NewClient(
 		config.WithApiKey(apiKey),
