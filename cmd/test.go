@@ -9,7 +9,7 @@ import (
 
 	go_anx_sdk "code.anexia.com/se/ks/go-anx-sdk"
 	"code.anexia.com/se/ks/go-anx-sdk/config"
-	"code.anexia.com/se/ks/go-anx-sdk/debug"
+	"code.anexia.com/se/ks/go-anx-sdk/utils"
 	v1 "code.anexia.com/se/ks/go-anx-sdk/v1"
 )
 
@@ -19,7 +19,7 @@ func main() {
 	apiKey := os.Getenv("API_KEY")
 
 	httpClient := &http.Client{
-		Transport: debug.NewLoggingRoundTripper(http.DefaultTransport),
+		Transport: utils.NewLoggingRoundTripper(http.DefaultTransport),
 	}
 
 	client := go_anx_sdk.NewClient(
