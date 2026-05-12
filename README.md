@@ -10,29 +10,20 @@ The project is still in early development.
 
 ```bash
 go get code.anexia.com/se/ks/go-anx-sdk
-Usage
-package main
+```
 
-import (
-	"context"
-	"fmt"
-	"log"
-	"net/http"
-	"os"
+## Usage
 
-	go_anx_sdk "code.anexia.com/se/ks/go-anx-sdk"
-	"code.anexia.com/se/ks/go-anx-sdk/config"
-	"code.anexia.com/se/ks/go-anx-sdk/utils"
-	v1 "code.anexia.com/se/ks/go-anx-sdk/v1"
-)
+The following shows how to use the api client.
 
+```go
 func main() {
 	ctx := context.Background()
 
 	apiKey := os.Getenv("API_KEY")
 
 	client := go_anx_sdk.NewClient(
-		config.WithApiKey(apiKey),
+		config.WithAPIKey(apiKey),
 		config.WithBaseURL("https://engine.anexia-it.com/"),
 		config.WithHttpClient(&http.Client{
 			Transport: utils.NewLoggingRoundTripper(http.DefaultTransport),
@@ -57,21 +48,76 @@ func main() {
 All endpoints are accessed via a versioned client:
 
 ```go
-client.V1()
+// entry point to the v1 api endpoints
+v1Client := client.V1()
+
+// v1 locations api endpoints
+locationV1Client := client.V1().Locations()
 ```
 
-### Resources
+### Structure
 
-Currently available:
+The following diagram explains the structure of the api client and how it is used end to end.
 
-- Locations
-- VLANs
+```mermaid
+flowchart TD
+    A[Consumer Application]
 
-Example:
+    A --> B[go_anx_sdk.Client]
 
-```go 
-client.V1().Locations().List(ctx, params)
-client.V1().Vlans().List(ctx, params)
+    B --> C[V1 Client]
+
+    C --> D[LocationsClient]
+    C --> E[VlansClient]
+    C --> F[Other Resource Clients...]
+
+    D --> G[internal.Transport]
+    E --> G
+    F --> G
+
+    G --> H[net/http.Client]
+
+    H --> I[Anexia API]
+
+    J[config.ClientOption]
+    J --> B
+
+    K[LoggingRoundTripper]
+    K --> H
+```
+
+The following diagram explains how a request flows through the different architectural layers. 
+
+```mermaid
+sequenceDiagram
+    participant App
+    participant Client
+    participant V1
+    participant Locations
+    participant Transport
+    participant HTTP
+    participant API
+
+    App->>Client: NewClient(opts...)
+    App->>V1: client.V1()
+    App->>Locations: Locations().List(ctx, params)
+
+    Locations->>Transport: Get(ctx, endpoint, response, params)
+
+    Transport->>Transport: buildRequestURL()
+    Transport->>Transport: newRequest()
+
+    Transport->>HTTP: client.Do(req)
+
+    HTTP->>API: HTTPS Request
+    API-->>HTTP: JSON Response
+
+    HTTP-->>Transport: *http.Response
+
+    Transport->>Transport: Decode JSON
+    Transport-->>Locations: typed response
+
+    Locations-->>App: PagedResponse[Location]
 ```
 
 ## Configuration
