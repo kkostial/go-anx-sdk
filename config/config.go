@@ -14,6 +14,7 @@ type Config struct {
 	client  *http.Client
 }
 
+// CreateTransport creates an internal transport helper from the config.
 func (c Config) CreateTransport() *internal.Transport {
 	return internal.NewTransport(
 		c.baseURL,
