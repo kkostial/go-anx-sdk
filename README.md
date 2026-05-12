@@ -18,25 +18,25 @@ The following shows how to use the api client.
 
 ```go
 func main() {
-	ctx := context.Background()
+ctx := context.Background()
 
-	apiKey := os.Getenv("API_KEY")
+apiKey := os.Getenv("API_KEY")
 
-	client := go_anx_sdk.NewClient(
-		config.WithAPIKey(apiKey),
-		config.WithHttpClient(&http.Client{
-			Transport: utils.NewLoggingRoundTripper(http.DefaultTransport),
-		}),
-	)
+client := go_anx_sdk.NewClient(
+config.WithAPIKey(apiKey),
+config.WithHttpClient(&http.Client{
+Transport: utils.NewLoggingRoundTripper(http.DefaultTransport),
+}),
+)
 
-	locations, err := client.V1().Locations().List(ctx, v1.LocationListParams{})
-	if err != nil {
-		log.Fatal(err)
-	}
+locations, err := client.V1().Locations().List(ctx, v1.LocationListParams{})
+if err != nil {
+log.Fatal(err)
+}
 
-	for _, l := range locations.Data {
-		fmt.Printf("%+v\n", l)
-	}
+for _, l := range locations.Data {
+fmt.Printf("%+v\n", l)
+}
 }
 ```
 
@@ -85,7 +85,7 @@ flowchart TD
     K --> H
 ```
 
-The following diagram explains how a request flows through the different architectural layers. 
+The following diagram explains how a request flows through the different architectural layers.
 
 ```mermaid
 sequenceDiagram
