@@ -80,9 +80,9 @@ func (t *Transport) Do(req *http.Request, response any) error {
 	if err != nil {
 		return err
 	}
-	defer func(Body io.ReadCloser) {
-		_ = Body.Close()
-	}(resp.Body)
+	defer func() {
+		_ = resp.Body.Close()
+	}()
 
 	if resp.StatusCode >= 400 {
 		body, err := io.ReadAll(resp.Body)
