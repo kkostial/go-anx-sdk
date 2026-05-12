@@ -119,7 +119,7 @@ func TestTransport_Do_APIError(t *testing.T) {
 	require := require.New(t)
 	assert := assert.New(t)
 
-	ts := newTestServer(t, func(w http.ResponseWriter, r *http.Request) {
+	ts := newTestServer(t, func(w http.ResponseWriter, _ *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		_, _ = w.Write([]byte("bad request"))
 	})
