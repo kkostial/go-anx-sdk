@@ -28,7 +28,7 @@ type Transport struct {
 	client  *http.Client
 }
 
-func (t *Transport) BuildRequestUrl(endpoint string, params any) (string, error) {
+func (t *Transport) buildRequestUrl(endpoint string, params any) (string, error) {
 	base, err := url.Parse(t.baseUrl)
 	if err != nil {
 		return "", fmt.Errorf("parsing base url: %w", err)
@@ -51,8 +51,8 @@ func (t *Transport) BuildRequestUrl(endpoint string, params any) (string, error)
 	return fullUrl, nil
 }
 
-func (t *Transport) NewRequest(ctx context.Context, method, endpoint string, body io.Reader, params any) (*http.Request, error) {
-	fullUrl, err := t.BuildRequestUrl(endpoint, params)
+func (t *Transport) newRequest(ctx context.Context, method, endpoint string, body io.Reader, params any) (*http.Request, error) {
+	fullUrl, err := t.buildRequestUrl(endpoint, params)
 	if err != nil {
 		return nil, fmt.Errorf("building request url: %w", err)
 	}
@@ -75,7 +75,7 @@ func (t *Transport) NewRequest(ctx context.Context, method, endpoint string, bod
 	return req, nil
 }
 
-func (t *Transport) Do(req *http.Request, response any) error {
+func (t *Transport) do(req *http.Request, response any) error {
 	resp, err := t.client.Do(req)
 	if err != nil {
 		return err
@@ -107,23 +107,7 @@ func (t *Transport) Do(req *http.Request, response any) error {
 	return nil
 }
 
-func (t *Transport) Get(ctx context.Context, endpoint string, response any, params any) error {
-	return t.DoWithBody(ctx, http.MethodGet, endpoint, nil, response, params)
-}
-
-func (t *Transport) Delete(ctx context.Context, endpoint string) error {
-	return t.DoWithBody(ctx, http.MethodDelete, endpoint, nil, nil, nil)
-}
-
-func (t *Transport) Post(ctx context.Context, endpoint string, request any, response any) error {
-	return t.DoWithBody(ctx, http.MethodPost, endpoint, request, response, nil)
-}
-
-func (t *Transport) Put(ctx context.Context, endpoint string, request any, response any) error {
-	return t.DoWithBody(ctx, http.MethodPut, endpoint, request, response, nil)
-}
-
-func (t *Transport) DoWithBody(ctx context.Context, method string, endpoint string, request any, response any, params any) error {
+func (t *Transport) doWithBody(ctx context.Context, method string, endpoint string, request any, response any, params any) error {
 	var body io.Reader
 
 	if request != nil {
@@ -137,12 +121,12 @@ func (t *Transport) DoWithBody(ctx context.Context, method string, endpoint stri
 		body = &reqBody
 	}
 
-	req, err := t.NewRequest(ctx, method, endpoint, body, params)
+	req, err := t.newRequest(ctx, method, endpoint, body, params)
 	if err != nil {
 		return fmt.Errorf("creating request: %w", err)
 	}
 
-	err = t.Do(req, response)
+	err = t.do(req, response)
 	if err != nil {
 		return fmt.Errorf("sending request: %w", err)
 	}
@@ -150,6 +134,23 @@ func (t *Transport) DoWithBody(ctx context.Context, method string, endpoint stri
 	return nil
 }
 
+func (t *Transport) Get(ctx context.Context, endpoint string, response any, params any) error {
+	return t.doWithBody(ctx, http.MethodGet, endpoint, nil, response, params)
+}
+
+func (t *Transport) Delete(ctx context.Context, endpoint string) error {
+	return t.doWithBody(ctx, http.MethodDelete, endpoint, nil, nil, nil)
+}
+
+func (t *Transport) Post(ctx context.Context, endpoint string, request any, response any) error {
+	return t.doWithBody(ctx, http.MethodPost, endpoint, request, response, nil)
+}
+
+func (t *Transport) Put(ctx context.Context, endpoint string, request any, response any) error {
+	return t.doWithBody(ctx, http.MethodPut, endpoint, request, response, nil)
+}
+
+// NewTransport creates a new internal transport helper with the provided base url, api key and http client.
 func NewTransport(baseUrl string, apiKey string, client *http.Client) *Transport {
 	if client == nil {
 		client = http.DefaultClient

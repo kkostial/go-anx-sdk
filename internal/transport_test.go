@@ -155,7 +155,7 @@ func TestTransport_BuildRequestUrl(t *testing.T) {
 	}
 
 	// act
-	url, err := tr.BuildRequestUrl("/v1/test", params)
+	url, err := tr.buildRequestUrl("/v1/test", params)
 
 	// assert
 	require.NoError(err)
