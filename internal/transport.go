@@ -12,16 +12,20 @@ import (
 	"github.com/google/go-querystring/query"
 )
 
+// TransportError is an internal http error.
 type TransportError struct {
 	StatusCode int
 	Status     string
 	Body       string
 }
 
+// Error implements the error interface for TransportError.
 func (a *TransportError) Error() string {
 	return fmt.Sprintf("transport error: StatusCode=%d, Status=%s, Body=%s", a.StatusCode, a.Status, a.Body)
 }
 
+// Transport is an internal http transport helper.
+// It is responsible for all http protocol layer logic and provides the reusable functions used in the client implementations.
 type Transport struct {
 	baseURL string
 	apiKey  string
@@ -134,18 +138,32 @@ func (t *Transport) doWithBody(ctx context.Context, method string, endpoint stri
 	return nil
 }
 
+// Get executes a get request against the anexia api.
+// endpoint is the relative url (to the configured base url) of the http api endpoint.
+// request if not nil will be JSON serialized and sent as the request body.
+// params will be used to extract the query parameters for the request via `query` attributes.
 func (t *Transport) Get(ctx context.Context, endpoint string, response any, params any) error {
 	return t.doWithBody(ctx, http.MethodGet, endpoint, nil, response, params)
 }
 
+// Delete executes a delete request against the anexia api.
+// endpoint is the relative url (to the configured base url) of the http api endpoint.
 func (t *Transport) Delete(ctx context.Context, endpoint string) error {
 	return t.doWithBody(ctx, http.MethodDelete, endpoint, nil, nil, nil)
 }
 
+// Post executes a post request against the anexia api.
+// endpoint is the relative url (to the configured base url) of the http api endpoint.
+// request if not nil will be JSON serialized and sent as the request body.
+// response must be a pointer to a response struct in which the response body will be JSON deserialized if not nil.
 func (t *Transport) Post(ctx context.Context, endpoint string, request any, response any) error {
 	return t.doWithBody(ctx, http.MethodPost, endpoint, request, response, nil)
 }
 
+// Put executes a put request against the anexia api.
+// endpoint is the relative url (to the configured base url) of the http api endpoint.
+// request if not nil will be JSON serialized and sent as the request body.
+// response must be a pointer to a response struct in which the response body will be JSON deserialized if not nil.
 func (t *Transport) Put(ctx context.Context, endpoint string, request any, response any) error {
 	return t.doWithBody(ctx, http.MethodPut, endpoint, request, response, nil)
 }
