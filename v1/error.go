@@ -7,13 +7,13 @@ import (
 	"code.anexia.com/se/ks/go-anx-sdk/internal"
 )
 
-type ApiError struct {
+type APIError struct {
 	StatusCode int
 	Status     string
 	Body       string
 }
 
-func (a *ApiError) Error() string {
+func (a *APIError) Error() string {
 	return fmt.Sprintf("api error: StatusCode=%d, Status=%s, Body=%s", a.StatusCode, a.Status, a.Body)
 }
 
@@ -24,7 +24,7 @@ func mapTransportError(err error) error {
 
 	var te *internal.TransportError
 	if errors.As(err, &te) {
-		return &ApiError{
+		return &APIError{
 			StatusCode: te.StatusCode,
 			Status:     te.Status,
 			Body:       te.Body,
