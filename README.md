@@ -18,25 +18,25 @@ The following shows how to use the api client.
 
 ```go
 func main() {
-ctx := context.Background()
+    ctx := context.Background()
 
-apiKey := os.Getenv("API_KEY")
+    apiKey := os.Getenv("API_KEY")
 
-client := go_anx_sdk.NewClient(
-config.WithAPIKey(apiKey),
-config.WithHttpClient(&http.Client{
-Transport: utils.NewLoggingRoundTripper(http.DefaultTransport),
-}),
-)
+    client := go_anx_sdk.NewClient(
+        config.WithAPIKey(apiKey),
+        config.WithHttpClient(&http.Client{
+            Transport: utils.NewLoggingRoundTripper(http.DefaultTransport),
+        }),
+    )
 
-locations, err := client.V1().Locations().List(ctx, v1.LocationListParams{})
-if err != nil {
-log.Fatal(err)
-}
+    locations, err := client.V1().Locations().List(ctx, v1.LocationListParams{})
+    if err != nil {
+        log.Fatal(err)
+    }
 
-for _, l := range locations.Data {
-fmt.Printf("%+v\n", l)
-}
+    for _, l := range locations.Data {
+        fmt.Printf("%+v\n", l)
+    }
 }
 ```
 
@@ -60,29 +60,51 @@ The following diagram explains the structure of the api client and how it is use
 
 ```mermaid
 flowchart TD
-    A[Consumer Application]
+    Consumer[Consumer Application]
 
-    A --> B[go_anx_sdk.Client]
+    SdkClient[go_anx_sdk.Client]
+    V1Client[V1 Client]
 
-    B --> C[V1 Client]
+    LocationsClient[LocationsClient]
+    VlansClient[VlansClient]
+    OtherClients[Other Resource Clients...]
 
-    C --> D[LocationsClient]
-    C --> E[VlansClient]
-    C --> F[Other Resource Clients...]
+    Transport[internal.Transport]
+    HttpClient[net/http.Client]
+    AnxApi[Anexia API]
 
-    D --> G[internal.Transport]
-    E --> G
-    F --> G
+    ClientOption[config.ClientOption]
+    LoggingRoundTripper[LoggingRoundTripper]
 
-    G --> H[net/http.Client]
+    Consumer --> SdkClient
+    SdkClient --> V1Client
+    V1Client --> LocationsClient
+    V1Client --> VlansClient
+    V1Client --> OtherClients
 
-    H --> I[Anexia API]
+    LocationsClient --> Transport
+    VlansClient --> Transport
+    OtherClients --> Transport
 
-    J[config.ClientOption]
-    J --> B
+    Transport --> HttpClient
+    HttpClient --> AnxApi
 
-    K[LoggingRoundTripper]
-    K --> H
+    ClientOption --> SdkClient
+    LoggingRoundTripper --> HttpClient
+
+%% -----------------------
+%% Styling / grouping
+%% -----------------------
+
+    classDef app fill:#E3F2FD,stroke:#1E88E5,stroke-width:2px;
+    classDef sdk_public fill:#E8F5E9,stroke:#43A047,stroke-width:2px;
+    classDef sdk_internal fill:#FFF3E0,stroke:#FB8C00,stroke-width:2px;
+    classDef api fill:#F3E5F5,stroke:#8E24AA,stroke-width:2px;
+
+    class Consumer app;
+    class SdkClient,V1Client,LocationsClient,VlansClient,OtherClients,ClientOption,LoggingRoundTripper sdk_public;
+    class Transport,HttpClient sdk_internal;
+    class AnxApi api;
 ```
 
 The following diagram explains how a request flows through the different architectural layers.
