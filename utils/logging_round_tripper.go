@@ -6,10 +6,12 @@ import (
 	"time"
 )
 
+// LoggingRoundTripper is a helper http.RoundTripper implementation that logs requests and responses.
 type LoggingRoundTripper struct {
 	Next http.RoundTripper
 }
 
+// NewLoggingRoundTripper creates a new instance of a LoggingRoundTripper.
 func NewLoggingRoundTripper(next http.RoundTripper) *LoggingRoundTripper {
 	if next == nil {
 		next = http.DefaultTransport
@@ -20,6 +22,7 @@ func NewLoggingRoundTripper(next http.RoundTripper) *LoggingRoundTripper {
 	}
 }
 
+// RoundTrip implements the http.RoundTripper interface for LoggingRoundTripper.
 func (t *LoggingRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	start := time.Now()
 	log.Printf("%s %s", req.Method, req.URL.String())
