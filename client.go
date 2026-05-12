@@ -13,11 +13,7 @@ type Client struct {
 
 // NewClient creates a new anexia go sdk client with the provided options.
 func NewClient(opts ...config.ClientOption) *Client {
-	var cfg config.Config
-
-	for _, opt := range opts {
-		opt(&cfg)
-	}
+	cfg := config.NewConfig(opts)
 
 	return &Client{
 		transport: cfg.CreateTransport(),

@@ -24,7 +24,6 @@ func main() {
 
 	client := go_anx_sdk.NewClient(
 		config.WithAPIKey(apiKey),
-		config.WithBaseURL("https://engine.anexia-it.com/"),
 		config.WithHttpClient(&http.Client{
 			Transport: utils.NewLoggingRoundTripper(http.DefaultTransport),
 		}),
