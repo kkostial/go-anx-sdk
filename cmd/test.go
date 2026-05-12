@@ -23,9 +23,9 @@ func main() {
 	}
 
 	client := go_anx_sdk.NewClient(
-		config.WithApiKey(apiKey),
+		config.WithAPIKey(apiKey),
 		config.WithBaseURL("https://engine.anexia-it.com/"),
-		config.WithHttpClient(httpClient),
+		config.WithHTTPClient(httpClient),
 	)
 
 	locations, err := client.V1().Locations().List(ctx, v1.LocationListParams{})

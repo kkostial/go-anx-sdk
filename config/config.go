@@ -10,13 +10,13 @@ import (
 // All fields are intentionally unexported and should be configured via the options pattern (see ClientOption).
 type Config struct {
 	apiKey  string
-	baseUrl string
+	baseURL string
 	client  *http.Client
 }
 
 func (c Config) CreateTransport() *internal.Transport {
 	return internal.NewTransport(
-		c.baseUrl,
+		c.baseURL,
 		c.apiKey,
 		nil,
 	)
@@ -25,8 +25,8 @@ func (c Config) CreateTransport() *internal.Transport {
 // ClientOption is a named type to improve code clarity and intent.
 type ClientOption func(*Config)
 
-// WithApiKey configures a new client with the given api key.
-func WithApiKey(apiKey string) ClientOption {
+// WithAPIKey configures a new client with the given api key.
+func WithAPIKey(apiKey string) ClientOption {
 	return func(config *Config) {
 		config.apiKey = apiKey
 	}
@@ -35,12 +35,12 @@ func WithApiKey(apiKey string) ClientOption {
 // WithBaseURL configures a new client with the given url as the base url.
 func WithBaseURL(url string) ClientOption {
 	return func(c *Config) {
-		c.baseUrl = url
+		c.baseURL = url
 	}
 }
 
-// WithHttpClient configures a new client with the given http client.
-func WithHttpClient(client *http.Client) ClientOption {
+// WithHTTPClient configures a new client with the given http client.
+func WithHTTPClient(client *http.Client) ClientOption {
 	return func(c *Config) {
 		c.client = client
 	}
