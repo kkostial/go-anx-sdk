@@ -4,6 +4,8 @@ import (
 	"log"
 	"net/http"
 	"time"
+
+	"code.anexia.com/se/ks/go-anx-sdk/internal/utils/sanitize"
 )
 
 // LoggingRoundTripper is a helper http.RoundTripper implementation that logs requests and responses.
@@ -25,7 +27,8 @@ func NewLoggingRoundTripper(next http.RoundTripper) *LoggingRoundTripper {
 // RoundTrip implements the http.RoundTripper interface for LoggingRoundTripper.
 func (t *LoggingRoundTripper) RoundTrip(req *http.Request) (*http.Response, error) {
 	start := time.Now()
-	log.Printf("%s %s", req.Method, req.URL.String())
+	// #nosec G706
+	log.Printf("%s %s", sanitize.LogValue(req.Method), sanitize.LogValue(req.URL.String()))
 
 	resp, err := t.Next.RoundTrip(req)
 	if err != nil {
