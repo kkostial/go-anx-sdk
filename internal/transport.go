@@ -23,13 +23,13 @@ func (a *TransportError) Error() string {
 }
 
 type Transport struct {
-	baseUrl string
+	baseURL string
 	apiKey  string
 	client  *http.Client
 }
 
-func (t *Transport) buildRequestUrl(endpoint string, params any) (string, error) {
-	base, err := url.Parse(t.baseUrl)
+func (t *Transport) buildRequestURL(endpoint string, params any) (string, error) {
+	base, err := url.Parse(t.baseURL)
 	if err != nil {
 		return "", fmt.Errorf("parsing base url: %w", err)
 	}
@@ -47,17 +47,17 @@ func (t *Transport) buildRequestUrl(endpoint string, params any) (string, error)
 	}
 	base.RawQuery = q.Encode()
 
-	fullUrl := base.String()
-	return fullUrl, nil
+	fullURL := base.String()
+	return fullURL, nil
 }
 
 func (t *Transport) newRequest(ctx context.Context, method, endpoint string, body io.Reader, params any) (*http.Request, error) {
-	fullUrl, err := t.buildRequestUrl(endpoint, params)
+	fullURL, err := t.buildRequestURL(endpoint, params)
 	if err != nil {
 		return nil, fmt.Errorf("building request url: %w", err)
 	}
 
-	req, err := http.NewRequestWithContext(ctx, method, fullUrl, body)
+	req, err := http.NewRequestWithContext(ctx, method, fullURL, body)
 	if err != nil {
 		return nil, fmt.Errorf("creating request: %w", err)
 	}
@@ -151,13 +151,13 @@ func (t *Transport) Put(ctx context.Context, endpoint string, request any, respo
 }
 
 // NewTransport creates a new internal transport helper with the provided base url, api key and http client.
-func NewTransport(baseUrl string, apiKey string, client *http.Client) *Transport {
+func NewTransport(baseURL string, apiKey string, client *http.Client) *Transport {
 	if client == nil {
 		client = http.DefaultClient
 	}
 
 	return &Transport{
-		baseUrl: baseUrl,
+		baseURL: baseURL,
 		apiKey:  apiKey,
 		client:  client,
 	}
