@@ -82,13 +82,13 @@ func (t *Transport) newRequest(ctx context.Context, method, endpoint string, bod
 func (t *Transport) do(req *http.Request, response any) error {
 	resp, err := t.client.Do(req)
 	if err != nil {
-		return err
+		return fmt.Errorf("executing http request: %w", err)
 	}
 	defer func() {
 		_ = resp.Body.Close()
 	}()
 
-	if resp.StatusCode >= 400 {
+	if resp.StatusCode >= http.StatusBadRequest {
 		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			return fmt.Errorf("reading response body: %w", err)

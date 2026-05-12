@@ -5,18 +5,68 @@ run:
   tests: true
 
 linters:
-  disable-all: true
   enable:
-    - govet
-    - staticcheck
-    - errcheck
-    - ineffassign
-    - unused
-    - gosec
-    - revive
-    - nilerr
+    - asciicheck
     - bodyclose
+    - dupl
+    - err113
+    - errcheck
+    - errchkjson
+    - errname
+    - errorlint
+    - exhaustive
+    - exptostd
+    - gochecknoinits
+    - gocritic
+    - godoclint
+    - godot
+    - gosec
+    - govet
+    - ineffassign
+    - nilerr
+    - revive
+    - staticcheck
+    - staticcheck
+    - tagalign
+    - tparallel
     - unconvert
+    - unconvert
+    - unparam
+    - unused
+    - usetesting
+    - whitespace
+    - wrapcheck
+  settings:
+    revive:
+      enable-all-rules: true
+      rules:
+      - name: add-constant
+        exclude: ["TEST"]
+        arguments:
+          - max-lit-count: "3"
+            allow-strs: '""'
+            allow-ints: "0,1,2"
+            allow-floats: "0.0,0.,1.0,1.,2.0,2."
+      - name: package-naming
+        disabled: true
+      - name: line-length-limit
+        arguments: [ 140 ]
+      - name: redundant-import-alias
+        disabled: true
+
+  exclusions:
+    rules:
+      - path: cmd
+        linters:
+          - revive
+      - path: _test\.go
+        linters:
+          - revive
+      - path: v1/.+\.go
+        linters:
+          - revive
+        text: "max-public-structs"
+
 
 formatters:
   enable:

@@ -22,7 +22,7 @@ type APITestCase struct {
 	ValidateRequest func(t *testing.T, r *http.Request)
 }
 
-// LoadsFixture loads a test fixture json
+// LoadsFixture loads a test fixture json.
 func LoadFixture(t *testing.T, path string) string {
 	t.Helper()
 
@@ -67,6 +67,8 @@ func RunAPITest(t *testing.T, tc APITestCase) *httptest.Server {
 
 // ExpectQuery asserts exact query parameters.
 func ExpectQuery(t *testing.T, expected map[string]string) func(*http.Request) {
+	t.Helper()
+
 	return func(r *http.Request) {
 		t.Helper()
 

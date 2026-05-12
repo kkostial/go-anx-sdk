@@ -30,7 +30,6 @@ func TestTransport_Get_Success(t *testing.T) {
 	assert := assert.New(t)
 
 	ts := newTestServer(t, func(w http.ResponseWriter, r *http.Request) {
-
 		// request assertions (contract validation)
 		assert.Equal(http.MethodGet, r.Method)
 		assert.Equal("/v1/test", r.URL.Path)
@@ -74,7 +73,6 @@ func TestTransport_Post_Success(t *testing.T) {
 	assert := assert.New(t)
 
 	ts := newTestServer(t, func(w http.ResponseWriter, r *http.Request) {
-
 		assert.Equal(http.MethodPost, r.Method)
 		assert.Equal("application/json", r.Header.Get("Content-Type"))
 

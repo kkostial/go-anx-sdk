@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -32,7 +33,7 @@ func (t *LoggingRoundTripper) RoundTrip(req *http.Request) (*http.Response, erro
 
 	resp, err := t.Next.RoundTrip(req)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("executing round trip: %w", err)
 	}
 
 	log.Printf("%s %s", resp.Status, time.Since(start))
