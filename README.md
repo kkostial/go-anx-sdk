@@ -145,9 +145,9 @@ sequenceDiagram
 
 The client is configured using functional options:
 
-- WithApiKey(string)
-- WithBaseURL(string)
-- WithHttpClient(*http.Client)
+- WithApiKey(string) - required or api will return a 401
+- WithBaseURL(string) - if omitted 'https://engine.anexia-it.com' will be used
+- WithHttpClient(*http.Client) - if omitted the default `http.Client` will be used
 
 ## Error handling
 
