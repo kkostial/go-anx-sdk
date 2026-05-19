@@ -28,12 +28,15 @@ func main() {
 		config.WithHTTPClient(httpClient),
 	)
 
-	locations, err := client.V1().Locations().List(ctx, v1.LocationListParams{})
+	values, err := client.V1().Clusters().List(ctx, v1.ClusterListParams{
+		Page:  0,
+		Limit: 10,
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	for _, l := range locations.Data {
+	for _, l := range values.Data {
 		fmt.Printf("%+v\n", l)
 	}
 }

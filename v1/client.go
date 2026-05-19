@@ -23,3 +23,8 @@ func (c *Client) Vlans() *VlansClient {
 func (c *Client) Locations() *LocationsClient {
 	return NewLocationsClient(c.transport)
 }
+
+// Clusters returns a clusters client.
+func (c *Client) Clusters() *ClustersClient {
+	return NewClustersClient(c.transport)
+}
