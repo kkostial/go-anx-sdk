@@ -9,7 +9,9 @@ import (
 
 	go_anx_sdk "code.anexia.com/se/ks/go-anx-sdk"
 	"code.anexia.com/se/ks/go-anx-sdk/config"
+	"code.anexia.com/se/ks/go-anx-sdk/internal/utils/ptr"
 	"code.anexia.com/se/ks/go-anx-sdk/utils"
+	v1 "code.anexia.com/se/ks/go-anx-sdk/v1"
 )
 
 func main() {
@@ -27,7 +29,9 @@ func main() {
 		config.WithHTTPClient(httpClient),
 	)
 
-	cluster, err := client.V1().Clusters().Get(ctx, "6f2e578fee7741528ea3d94ff156141b")
+	cluster, err := client.V1().Clusters().Update(ctx, "b06c68f4a2154fe58d11ae12bed7039f", v1.ClusterUpdateRequest{
+		KubeConfig: ptr.To("hallo!"),
+	})
 	if err != nil {
 		log.Fatal(err)
 	}
