@@ -1,4 +1,4 @@
-module code.anexia.com/se/ks/go-anx-sdk.git
+module github.com/kkostial/go-anx-sdk
 
 go 1.25
 
