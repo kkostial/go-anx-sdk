@@ -8,6 +8,14 @@ import (
 	"github.com/kkostial/go-anx-sdk/paging"
 )
 
+type kubernetesEnvironment string
+
+const (
+	kubernetesEnvironmentProduction  kubernetesEnvironment = "production"
+	kubernetesEnvironmentStaging     kubernetesEnvironment = "staging"
+	kubernetesEnvironmentDevelopment kubernetesEnvironment = "development"
+)
+
 type ClusterState string
 
 const (
@@ -146,159 +154,111 @@ type ClusterUpdateResponse struct {
 	State              struct {
 		Text  string `json:"text"`
 		Title string `json:"title"`
-		Id    string `json:"id"`
+		ID    string `json:"id"`
 		Type  int    `json:"type"`
 	} `json:"state"`
-	Location struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"location"`
-	Version                    string      `json:"version"`
-	PatchVersion               interface{} `json:"patch_version"`
-	Kubeconfig                 string      `json:"kubeconfig"`
-	Autoscaling                bool        `json:"autoscaling"`
-	EnablePersistentStorage    bool        `json:"enable_persistent_storage"`
-	CniPlugin                  string      `json:"cni_plugin"`
-	ApiserverAllowlist         interface{} `json:"apiserver_allowlist"`
-	BackendName                string      `json:"backend_name"`
-	Backend                    string      `json:"backend"`
-	MaintenanceWindowStartTime string      `json:"maintenance_window_start_time"`
-	MaintenanceWindowDuration  string      `json:"maintenance_window_duration"`
-	ServiceUser                struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_user"`
-	ManageInternalIpv4Prefix bool `json:"manage_internal_ipv4_prefix"`
-	InternalIpv4Prefix       struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"internal_ipv4_prefix"`
-	NeedsServiceVms          bool   `json:"needs_service_vms"`
-	EnableNatGateways        bool   `json:"enable_nat_gateways"`
-	EnableLbaas              bool   `json:"enable_lbaas"`
-	ExternalIpFamilies       string `json:"external_ip_families"`
-	ManageExternalIpv4Prefix bool   `json:"manage_external_ipv4_prefix"`
-	ExternalIpv4Prefix       struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"external_ipv4_prefix"`
-	ManageExternalIpv6Prefix bool `json:"manage_external_ipv6_prefix"`
-	ExternalIpv6Prefix       struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"external_ipv6_prefix"`
-	ServiceVm01 struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_vm_01"`
-	ServiceVm02 struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_vm_02"`
-	ServiceVm01InternalIpv4Address struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_vm_01_internal_ipv4_address"`
-	ServiceVm02InternalIpv4Address struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_vm_02_internal_ipv4_address"`
-	ServiceVm01ExternalIpv4Address struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_vm_01_external_ipv4_address"`
-	ServiceVm02ExternalIpv4Address struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_vm_02_external_ipv4_address"`
-	ServiceVm01ExternalIpv6Address struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_vm_01_external_ipv6_address"`
-	ServiceVm02ExternalIpv6Address struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_vm_02_external_ipv6_address"`
-	ServiceLb01 struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_lb_01"`
-	ServiceLb02 struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"service_lb_02"`
-	ExternalIpv4Vip struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"external_ipv4_vip"`
-	ExternalIpv6Vip struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"external_ipv6_vip"`
-	KkpApiLbaasBackend01 struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"kkp_api_lbaas_backend_01"`
-	KkpApiLbaasBackend02 struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"kkp_api_lbaas_backend_02"`
-	KkpVpnLbaasBackend01 struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"kkp_vpn_lbaas_backend_01"`
-	KkpVpnLbaasBackend02 struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"kkp_vpn_lbaas_backend_02"`
-	StorageServerInterfaceAddress interface{} `json:"storage_server_interface_address"`
-	KkpProjectId                  string      `json:"kkp_project_id"`
-	KkpClusterId                  string      `json:"kkp_cluster_id"`
-	InternalVlan                  interface{} `json:"internal_vlan"`
-	ExternalVlan                  interface{} `json:"external_vlan"`
-	EnableOidcAuthentication      bool        `json:"enable_oidc_authentication"`
-	OidcClientId                  interface{} `json:"oidc_client_id"`
-	OidcIssuerUrl                 interface{} `json:"oidc_issuer_url"`
-	OidcGroupsClaim               string      `json:"oidc_groups_claim"`
-	OidcUsernameClaim             string      `json:"oidc_username_claim"`
-	OidcExtraScopes               interface{} `json:"oidc_extra_scopes"`
-	OidcGroupsPrefix              interface{} `json:"oidc_groups_prefix"`
-	OidcRequiredClaim             interface{} `json:"oidc_required_claim"`
-	OidcUsernamePrefix            interface{} `json:"oidc_username_prefix"`
-	AutomationRules               []struct {
-		Identifier string `json:"identifier"`
-		Name       string `json:"name"`
-	} `json:"automation_rules"`
+	Location                       Resource   `json:"location"`
+	Version                        string     `json:"version"`
+	PatchVersion                   any        `json:"patch_version"`
+	Kubeconfig                     string     `json:"kubeconfig"`
+	Autoscaling                    bool       `json:"autoscaling"`
+	EnablePersistentStorage        bool       `json:"enable_persistent_storage"`
+	CniPlugin                      string     `json:"cni_plugin"`
+	ApiserverAllowlist             any        `json:"apiserver_allowlist"`
+	BackendName                    string     `json:"backend_name"`
+	Backend                        string     `json:"backend"`
+	MaintenanceWindowStartTime     string     `json:"maintenance_window_start_time"`
+	MaintenanceWindowDuration      string     `json:"maintenance_window_duration"`
+	ServiceUser                    Resource   `json:"service_user"`
+	ManageInternalIpv4Prefix       bool       `json:"manage_internal_ipv4_prefix"`
+	InternalIpv4Prefix             Resource   `json:"internal_ipv4_prefix"`
+	NeedsServiceVms                bool       `json:"needs_service_vms"`
+	EnableNatGateways              bool       `json:"enable_nat_gateways"`
+	EnableLbaas                    bool       `json:"enable_lbaas"`
+	ExternalIPFamilies             string     `json:"external_ip_families"`
+	ManageExternalIpv4Prefix       bool       `json:"manage_external_ipv4_prefix"`
+	ExternalIpv4Prefix             Resource   `json:"external_ipv4_prefix"`
+	ManageExternalIpv6Prefix       bool       `json:"manage_external_ipv6_prefix"`
+	ExternalIpv6Prefix             Resource   `json:"external_ipv6_prefix"`
+	ServiceVM01                    Resource   `json:"service_vm_01"`
+	ServiceVM02                    Resource   `json:"service_vm_02"`
+	ServiceVM01InternalIpv4Address Resource   `json:"service_vm_01_internal_ipv4_address"`
+	ServiceVM02InternalIpv4Address Resource   `json:"service_vm_02_internal_ipv4_address"`
+	ServiceVM01ExternalIpv4Address Resource   `json:"service_vm_01_external_ipv4_address"`
+	ServiceVM02ExternalIpv4Address Resource   `json:"service_vm_02_external_ipv4_address"`
+	ServiceVM01ExternalIpv6Address Resource   `json:"service_vm_01_external_ipv6_address"`
+	ServiceVM02ExternalIpv6Address Resource   `json:"service_vm_02_external_ipv6_address"`
+	ServiceLb01                    Resource   `json:"service_lb_01"`
+	ServiceLb02                    Resource   `json:"service_lb_02"`
+	ExternalIpv4Vip                Resource   `json:"external_ipv4_vip"`
+	ExternalIpv6Vip                Resource   `json:"external_ipv6_vip"`
+	KKPApiLbaasBackend01           Resource   `json:"kkp_api_lbaas_backend_01"`
+	KKPApiLbaasBackend02           Resource   `json:"kkp_api_lbaas_backend_02"`
+	KKPVpnLbaasBackend01           Resource   `json:"kkp_vpn_lbaas_backend_01"`
+	KKPVpnLbaasBackend02           Resource   `json:"kkp_vpn_lbaas_backend_02"`
+	StorageServerInterfaceAddress  any        `json:"storage_server_interface_address"`
+	KKPProjectID                   string     `json:"kkp_project_id"`
+	KKPClusterID                   string     `json:"kkp_cluster_id"`
+	InternalVlan                   any        `json:"internal_vlan"`
+	ExternalVlan                   any        `json:"external_vlan"`
+	EnableOidcAuthentication       bool       `json:"enable_oidc_authentication"`
+	OIDCClientID                   any        `json:"oidc_client_id"`
+	OIDCIssuerURL                  any        `json:"oidc_issuer_url"`
+	OIDCGroupsClaim                string     `json:"oidc_groups_claim"`
+	OIDCUsernameClaim              string     `json:"oidc_username_claim"`
+	OIDCExtraScopes                any        `json:"oidc_extra_scopes"`
+	OIDCGroupsPrefix               any        `json:"oidc_groups_prefix"`
+	OIDCRequiredClaim              any        `json:"oidc_required_claim"`
+	OIDCUsernamePrefix             any        `json:"oidc_username_prefix"`
+	AutomationRules                []Resource `json:"automation_rules"`
 }
 
 // ClustersClient is an api client for managing clusters.
 type ClustersClient struct {
-	transport *internal.Transport
+	environment kubernetesEnvironment
+	transport   *internal.Transport
 }
 
-// NewClustersClient creates a new cluster client.
-func NewClustersClient(transport *internal.Transport) *ClustersClient {
+func newClustersClient(
+	transport *internal.Transport,
+	environment kubernetesEnvironment,
+) *ClustersClient {
 	return &ClustersClient{
-		transport: transport,
+		transport:   transport,
+		environment: environment,
 	}
+}
+
+func (c *ClustersClient) endpointRoot() string {
+	switch c.environment {
+	case kubernetesEnvironmentDevelopment:
+		return "/api/kubernetes-dev"
+	case kubernetesEnvironmentStaging:
+		return "/api/kubernetes-stage"
+	case kubernetesEnvironmentProduction:
+		return "/api/kubernetes"
+	}
+
+	return "/api/kubernetes"
 }
 
 // Get returns a single cluster by its id.
 func (c *ClustersClient) Get(ctx context.Context, identifier string) (ClusterGetResponse, error) {
 	resp := ClusterGetResponse{}
-	err := c.transport.Get(ctx, fmt.Sprintf("/api/kubernetes-dev/v1/cluster.json/%s", identifier), &resp, nil)
+	err := c.transport.Get(ctx, fmt.Sprintf("%s/v1/cluster.json/%s", c.endpointRoot(), identifier), &resp, nil)
 	return resp, mapTransportError(err)
 }
 
+// Update updates a cluster.
 func (c *ClustersClient) Update(ctx context.Context, identifier string, request ClusterUpdateRequest) (ClusterUpdateResponse, error) {
 	resp := ClusterUpdateResponse{}
-	err := c.transport.Put(ctx, fmt.Sprintf("/api/kubernetes-dev/v1/cluster.json/%s", identifier), request, &resp)
+	err := c.transport.Put(ctx, fmt.Sprintf("%s/v1/cluster.json/%s", c.endpointRoot(), identifier), request, &resp)
 	return resp, mapTransportError(err)
 }
 
 // List returns a list of paged clusters.
 func (c *ClustersClient) List(ctx context.Context, params ClusterListParams) (paging.PagedResponse[ClusterListItem], error) {
 	resp := internal.RequestWrapper[paging.PagedResponse[ClusterListItem]]{}
-	err := c.transport.Get(ctx, "/api/kubernetes-dev/v1/cluster.json", &resp, params)
+	err := c.transport.Get(ctx, fmt.Sprintf("%s/v1/cluster.json", c.endpointRoot()), &resp, params)
 	return resp.Data, mapTransportError(err)
 }
