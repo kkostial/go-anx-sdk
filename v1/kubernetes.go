@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"code.anexia.com/se/ks/go-anx-sdk/internal"
-	"code.anexia.com/se/ks/go-anx-sdk/paging"
+	"github.com/kkostial/go-anx-sdk/internal"
+	"github.com/kkostial/go-anx-sdk/paging"
 )
 
 type ClusterState string

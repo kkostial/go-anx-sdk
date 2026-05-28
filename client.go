@@ -1,9 +1,9 @@
 package go_anx_sdk
 
 import (
-	"code.anexia.com/se/ks/go-anx-sdk/config"
-	"code.anexia.com/se/ks/go-anx-sdk/internal"
-	v1 "code.anexia.com/se/ks/go-anx-sdk/v1"
+	"github.com/kkostial/go-anx-sdk/config"
+	"github.com/kkostial/go-anx-sdk/internal"
+	v1 "github.com/kkostial/go-anx-sdk/v1"
 )
 
 // Client is the entry point to the anexia api.

@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"os"
 
-	go_anx_sdk "code.anexia.com/se/ks/go-anx-sdk"
-	"code.anexia.com/se/ks/go-anx-sdk/config"
-	"code.anexia.com/se/ks/go-anx-sdk/internal/utils/ptr"
-	"code.anexia.com/se/ks/go-anx-sdk/utils"
-	v1 "code.anexia.com/se/ks/go-anx-sdk/v1"
+	go_anx_sdk "github.com/kkostial/go-anx-sdk"
+	"github.com/kkostial/go-anx-sdk/config"
+	"github.com/kkostial/go-anx-sdk/internal/utils/ptr"
+	"github.com/kkostial/go-anx-sdk/utils"
+	v1 "github.com/kkostial/go-anx-sdk/v1"
 )
 
 func main() {

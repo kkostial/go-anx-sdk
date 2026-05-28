@@ -6,8 +6,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"code.anexia.com/se/ks/go-anx-sdk/internal"
-	v1 "code.anexia.com/se/ks/go-anx-sdk/v1"
+	"github.com/kkostial/go-anx-sdk/internal"
+	v1 "github.com/kkostial/go-anx-sdk/v1"
 
 	"github.com/stretchr/testify/require"
 )
