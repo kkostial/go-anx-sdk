@@ -63,6 +63,11 @@ type ClusterListItem struct {
 	Name       string `json:"name"`
 }
 
+// GetID returns the id of the cluster.
+func (c ClusterListItem) GetID() string {
+	return c.Identifier
+}
+
 // State represents a clusters current state.
 // Maybe extract out as soon as others need it too.
 type State struct {

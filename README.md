@@ -152,11 +152,28 @@ The client is configured using functional options:
 ## Pagination
 
 Pagination is achieved by leveraging go's new standard library iter.Seq2 type.
-The `pagination.Paginate` function accepts any `pagination.PageFetcher` which is provided by any client that returns paged data.
+The `paging.Paginate` function accepts any `paging.PageFetcher` which is provided by any client that returns paged data.
 
 Example of iterating over all dev clusters:
 ```go
 clusters := paging.Paginate(ctx, client.V1().DevClusters().ListPageFetcher(v1.ClusterListParams{}))
+for cluster, err := range clusters {
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Printf("%+v\n", cluster)
+}
+```
+
+To iterate over all items and fetch the details (in case the list response item is not enough) it is possible to use the `paging.PaginateAndLoad` function.
+This function internally uses the `paging.Paginate` function and a provided `paginate.ItemFetcher` to load each item.
+
+Example of iterating over all dev clusters and fetching each clusters details:
+
+```go
+clusterClient := client.V1().DevClusters()
+clusters := paging.PaginateAndLoad(ctx, clusterClient.ListPageFetcher(v1.ClusterListParams{}), clusterClient.Get)
 for cluster, err := range clusters {
     if err != nil {
         panic(err)

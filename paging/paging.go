@@ -5,6 +5,11 @@ import (
 	"iter"
 )
 
+// ItemWithID is an interface that ensures an item has an id.
+type ItemWithID interface {
+	GetID() string
+}
+
 // PagedResponse is a generic response type wrapping paging logic of the anexia engine.
 type PagedResponse[T any] struct {
 	Page       int `json:"page"`
@@ -20,6 +25,12 @@ type PageFetcher[T any] func(
 	page int,
 	limit int,
 ) (PagedResponse[T], error)
+
+// ItemFetcher is a function that fetches a single resource from the api via its id.
+type ItemFetcher[T any] func(
+	ctx context.Context,
+	id string,
+) (T, error)
 
 const engineMaxPageLimit = 100
 
@@ -56,6 +67,32 @@ func Paginate[T any]( //revive:disable:cognitive-complexity
 			}
 
 			page++
+		}
+	}
+}
+
+// PaginateAndLoad iterates all resources from a paged endpoint
+// using the provided PageFetcher and loads each item using the provided ItemFetcher.
+func PaginateAndLoad[T ItemWithID, TResult any](
+	ctx context.Context,
+	fetchPage PageFetcher[T],
+	fetchItem ItemFetcher[TResult],
+) iter.Seq2[TResult, error] {
+	return func(yield func(TResult, error) bool) {
+		var zero TResult
+
+		for item, err := range Paginate(ctx, fetchPage) {
+			if err != nil {
+				yield(zero, err)
+				return
+			}
+
+			engineResource, err := fetchItem(ctx, item.GetID())
+			if err != nil {
+				yield(zero, err)
+			} else {
+				yield(engineResource, nil)
+			}
 		}
 	}
 }

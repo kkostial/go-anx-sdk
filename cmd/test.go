@@ -28,7 +28,8 @@ func main() {
 		config.WithHTTPClient(httpClient),
 	)
 
-	clusters := paging.Paginate(ctx, client.V1().DevClusters().ListPageFetcher(v1.ClusterListParams{}))
+	clusterClient := client.V1().DevClusters()
+	clusters := paging.PaginateAndLoad(ctx, clusterClient.ListPageFetcher(v1.ClusterListParams{}), clusterClient.Get)
 	for cluster, err := range clusters {
 		if err != nil {
 			panic(err)

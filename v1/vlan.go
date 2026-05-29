@@ -83,6 +83,11 @@ type VlanListItem struct {
 	DescriptionCustomer string `json:"description_customer"`
 }
 
+// GetID returns the id of the vlan.
+func (v VlanListItem) GetID() string {
+	return v.Identifier
+}
+
 // VlansClient is an api client for managing vlans.
 type VlansClient struct {
 	transport *internal.Transport

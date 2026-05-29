@@ -25,6 +25,11 @@ type LocationListItem struct {
 	Lon        *string `json:"lon"`
 }
 
+// GetID returns the id of the location.
+func (l LocationListItem) GetID() string {
+	return l.Identifier
+}
+
 // LocationsClient is an api client for managing locations.
 type LocationsClient struct {
 	transport *internal.Transport
