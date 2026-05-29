@@ -16,8 +16,10 @@ const (
 	kubernetesEnvironmentDevelopment kubernetesEnvironment = "development"
 )
 
+// ClusterState is a type to represent valid cluster states IDs.
 type ClusterState string
 
+// All available supported ClusterState values.
 const (
 	ClusterStateOk                     ClusterState = "0"
 	ClusterStateError                  ClusterState = "1"
@@ -30,8 +32,10 @@ const (
 	ClusterStateUpdatingNodes          ClusterState = "8"
 )
 
+// ClusterVersion is a type to represent valid cluster verions.
 type ClusterVersion string
 
+// All available supported ClusterVersion values.
 const (
 	ClusterVersion1_32 ClusterVersion = "1.32"
 	ClusterVersion1_33 ClusterVersion = "1.33"
@@ -39,8 +43,10 @@ const (
 	ClusterVersion1_35 ClusterVersion = "1.35"
 )
 
+// ClusterCniPlugin is a type to represent valid cni plugins.
 type ClusterCniPlugin string
 
+// All available supported ClusterCniPlugin values.
 const (
 	ClusterCniPluginCanal ClusterCniPlugin = "Canal"
 )
@@ -57,12 +63,12 @@ type ClusterListItem struct {
 	Name       string `json:"name"`
 }
 
-// ClusterState represents a clusters current state.
+// State represents a clusters current state.
 // Maybe extract out as soon as others need it too.
 type State struct {
 	Text  string       `json:"text"`
 	Title string       `json:"title"`
-	Id    ClusterState `json:"id"`
+	ID    ClusterState `json:"id"`
 	Type  int          `json:"type"`
 }
 
@@ -80,7 +86,7 @@ type ClusterGetResponse struct {
 	Autoscaling                    bool             `json:"autoscaling"`
 	EnablePersistentStorage        bool             `json:"enable_persistent_storage"`
 	CniPlugin                      ClusterCniPlugin `json:"cni_plugin"`
-	ApiServerAllowlist             string           `json:"apiserver_allowlist"`
+	APIServerAllowlist             string           `json:"apiserver_allowlist"`
 	BackendName                    string           `json:"backend_name"`
 	Backend                        string           `json:"backend"`
 	MaintenanceWindowStartTime     string           `json:"maintenance_window_start_time"`
@@ -91,33 +97,33 @@ type ClusterGetResponse struct {
 	NeedsServiceVms                bool             `json:"needs_service_vms"`
 	EnableNatGateways              bool             `json:"enable_nat_gateways"`
 	EnableLbaas                    bool             `json:"enable_lbaas"`
-	ExternalIpFamilies             string           `json:"external_ip_families"`
+	ExternalIPFamilies             string           `json:"external_ip_families"`
 	ManageExternalIpv4Prefix       bool             `json:"manage_external_ipv4_prefix"`
 	ExternalIpv4Prefix             Resource         `json:"external_ipv4_prefix"`
 	ManageExternalIpv6Prefix       bool             `json:"manage_external_ipv6_prefix"`
 	ExternalIpv6Prefix             Resource         `json:"external_ipv6_prefix"`
-	ServiceVm01                    Resource         `json:"service_vm_01"`
-	ServiceVm02                    Resource         `json:"service_vm_02"`
-	ServiceVm01InternalIpv4Address Resource         `json:"service_vm_01_internal_ipv4_address"`
-	ServiceVm02InternalIpv4Address Resource         `json:"service_vm_02_internal_ipv4_address"`
-	ServiceVm01ExternalIpv4Address Resource         `json:"service_vm_01_external_ipv4_address"`
-	ServiceVm02ExternalIpv4Address Resource         `json:"service_vm_02_external_ipv4_address"`
-	ServiceVm01ExternalIpv6Address Resource         `json:"service_vm_01_external_ipv6_address"`
-	ServiceVm02ExternalIpv6Address Resource         `json:"service_vm_02_external_ipv6_address"`
+	ServiceVM01                    Resource         `json:"service_vm_01"`
+	ServiceVM02                    Resource         `json:"service_vm_02"`
+	ServiceVM01InternalIpv4Address Resource         `json:"service_vm_01_internal_ipv4_address"`
+	ServiceVM02InternalIpv4Address Resource         `json:"service_vm_02_internal_ipv4_address"`
+	ServiceVM01ExternalIpv4Address Resource         `json:"service_vm_01_external_ipv4_address"`
+	ServiceVM02ExternalIpv4Address Resource         `json:"service_vm_02_external_ipv4_address"`
+	ServiceVM01ExternalIpv6Address Resource         `json:"service_vm_01_external_ipv6_address"`
+	ServiceVM02ExternalIpv6Address Resource         `json:"service_vm_02_external_ipv6_address"`
 	ServiceLb01                    Resource         `json:"service_lb_01"`
 	ServiceLb02                    Resource         `json:"service_lb_02"`
 	ExternalIpv4Vip                Resource         `json:"external_ipv4_vip"`
 	ExternalIpv6Vip                Resource         `json:"external_ipv6_vip"`
-	KkpApiLbaasBackend01           Resource         `json:"kkp_api_lbaas_backend_01"`
-	KkpApiLbaasBackend02           Resource         `json:"kkp_api_lbaas_backend_02"`
-	KkpVpnLbaasBackend01           Resource         `json:"kkp_vpn_lbaas_backend_01"`
-	KkpVpnLbaasBackend02           Resource         `json:"kkp_vpn_lbaas_backend_02"`
+	KkpAPILbaasBackend01           Resource         `json:"kkp_api_lbaas_backend_01"`
+	KkpAPILbaasBackend02           Resource         `json:"kkp_api_lbaas_backend_02"`
+	KKPVpnLbaasBackend01           Resource         `json:"kkp_vpn_lbaas_backend_01"`
+	KKPVpnLbaasBackend02           Resource         `json:"kkp_vpn_lbaas_backend_02"`
 	StorageServerInterfaceAddress  Resource         `json:"storage_server_interface_address"`
-	KkpProjectId                   string           `json:"kkp_project_id"`
-	KkpClusterId                   string           `json:"kkp_cluster_id"`
+	KKPProjectID                   string           `json:"kkp_project_id"`
+	KKPClusterID                   string           `json:"kkp_cluster_id"`
 	EnableOidcAuthentication       bool             `json:"enable_oidc_authentication"`
-	OidcClientId                   string           `json:"oidc_client_id"`
-	OidcIssuerUrl                  string           `json:"oidc_issuer_url"`
+	OIDCClientID                   string           `json:"oidc_client_id"`
+	OIDCIssuerURL                  string           `json:"oidc_issuer_url"`
 	OidcGroupsClaim                string           `json:"oidc_groups_claim"`
 	OidcUsernameClaim              string           `json:"oidc_username_claim"`
 	OidcExtraScopes                string           `json:"oidc_extra_scopes"`
@@ -127,6 +133,7 @@ type ClusterGetResponse struct {
 	AutomationRules                []Resource       `json:"automation_rules"`
 }
 
+// ClusterUpdateRequest represents all changes made to a cluster during an update request.
 type ClusterUpdateRequest struct {
 	Name                       *string           `json:"name,omitempty"`
 	State                      *ClusterState     `json:"state,omitempty"`
@@ -137,7 +144,7 @@ type ClusterUpdateRequest struct {
 	Autoscaling                *bool             `json:"autoscaling,omitempty"`
 	EnablePersistentStorage    *bool             `json:"enable_persistent_storage,omitempty"`
 	CniPlugin                  *ClusterCniPlugin `json:"cni_plugin,omitempty"`
-	ApiServerAllowList         *string           `json:"api_server_allow_list,omitempty"`
+	APIServerAllowList         *string           `json:"api_server_allow_list,omitempty"`
 	BackendName                *string           `json:"backend_name,omitempty"`
 	Backend                    *string           `json:"backend,omitempty"`
 	MaintenanceWindowStartTime *string           `json:"maintenance_window_start_time,omitempty"`
@@ -146,17 +153,13 @@ type ClusterUpdateRequest struct {
 	// manage_internal_ipv4_prefix
 }
 
+// ClusterUpdateResponse represents the response of the cluster update endpoint.
 type ClusterUpdateResponse struct {
-	CustomerIdentifier string `json:"customer_identifier"`
-	ResellerIdentifier string `json:"reseller_identifier"`
-	Identifier         string `json:"identifier"`
-	Name               string `json:"name"`
-	State              struct {
-		Text  string `json:"text"`
-		Title string `json:"title"`
-		ID    string `json:"id"`
-		Type  int    `json:"type"`
-	} `json:"state"`
+	CustomerIdentifier             string     `json:"customer_identifier"`
+	ResellerIdentifier             string     `json:"reseller_identifier"`
+	Identifier                     string     `json:"identifier"`
+	Name                           string     `json:"name"`
+	State                          State      `json:"state"`
 	Location                       Resource   `json:"location"`
 	Version                        string     `json:"version"`
 	PatchVersion                   any        `json:"patch_version"`
