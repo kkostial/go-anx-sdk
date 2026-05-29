@@ -43,3 +43,12 @@ func (v *LocationsClient) List(ctx context.Context, params LocationListParams) (
 	err := v.transport.Get(ctx, "/api/core/v1/location.json", &resp, params)
 	return resp.Data, mapTransportError(err)
 }
+
+// ListPageFetcher returns a paging.PageFetcher for locations.
+func (v *LocationsClient) ListPageFetcher(params LocationListParams) paging.PageFetcher[LocationListItem] {
+	return func(ctx context.Context, page int, limit int) (paging.PagedResponse[LocationListItem], error) {
+		params.Page = page
+		params.Limit = limit
+		return v.List(ctx, params)
+	}
+}

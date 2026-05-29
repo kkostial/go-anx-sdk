@@ -123,11 +123,29 @@ func (v *VlansClient) List(ctx context.Context, params VlanListParams) (paging.P
 	return resp.Data, mapTransportError(err)
 }
 
+// ListPageFetcher returns a paging.PageFetcher for vlans.
+func (v *VlansClient) ListPageFetcher(params VlanListParams) paging.PageFetcher[VlanListItem] {
+	return func(ctx context.Context, page int, limit int) (paging.PagedResponse[VlanListItem], error) {
+		params.Page = page
+		params.Limit = limit
+		return v.List(ctx, params)
+	}
+}
+
 // ListFiltered returns a paged list of vlans filtered by the provided parameters.
 func (v *VlansClient) ListFiltered(ctx context.Context, params VlanFilteredParams) (paging.PagedResponse[VlanListItem], error) {
 	resp := internal.RequestWrapper[paging.PagedResponse[VlanListItem]]{}
 	err := v.transport.Get(ctx, "/api/vlan/v1/vlan/filtered.json", &resp, params)
 	return resp.Data, mapTransportError(err)
+}
+
+// ListFilteredPageFetcher returns a paging.PageFetcher for filtered vlans.
+func (v *VlansClient) ListFilteredPageFetcher(params VlanFilteredParams) paging.PageFetcher[VlanListItem] {
+	return func(ctx context.Context, page int, limit int) (paging.PagedResponse[VlanListItem], error) {
+		params.Page = page
+		params.Limit = limit
+		return v.ListFiltered(ctx, params)
+	}
 }
 
 // Delete deletes a vlan by identifier.

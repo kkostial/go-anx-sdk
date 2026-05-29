@@ -3,13 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 	"os"
 
 	go_anx_sdk "github.com/kkostial/go-anx-sdk"
 	"github.com/kkostial/go-anx-sdk/config"
-	"github.com/kkostial/go-anx-sdk/internal/utils/ptr"
+	"github.com/kkostial/go-anx-sdk/paging"
 	"github.com/kkostial/go-anx-sdk/utils"
 	v1 "github.com/kkostial/go-anx-sdk/v1"
 )
@@ -29,12 +28,12 @@ func main() {
 		config.WithHTTPClient(httpClient),
 	)
 
-	cluster, err := client.V1().Clusters().Update(ctx, "b06c68f4a2154fe58d11ae12bed7039f", v1.ClusterUpdateRequest{
-		KubeConfig: ptr.To("hallo!"),
-	})
-	if err != nil {
-		log.Fatal(err)
-	}
+	clusters := paging.Paginate(ctx, 2, client.V1().DevClusters().ListPageFetcher(v1.ClusterListParams{}))
+	for cluster, err := range clusters {
+		if err != nil {
+			panic(err)
+		}
 
-	fmt.Printf("%+v\n", cluster)
+		fmt.Printf("%+v\n", cluster)
+	}
 }

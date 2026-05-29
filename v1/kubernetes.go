@@ -265,3 +265,12 @@ func (c *ClustersClient) List(ctx context.Context, params ClusterListParams) (pa
 	err := c.transport.Get(ctx, fmt.Sprintf("%s/v1/cluster.json", c.endpointRoot()), &resp, params)
 	return resp.Data, mapTransportError(err)
 }
+
+// ListPageFetcher returns a paging.PageFetcher for clusters.
+func (c *ClustersClient) ListPageFetcher(params ClusterListParams) paging.PageFetcher[ClusterListItem] {
+	return func(ctx context.Context, page int, limit int) (paging.PagedResponse[ClusterListItem], error) {
+		params.Page = page
+		params.Limit = limit
+		return c.List(ctx, params)
+	}
+}
