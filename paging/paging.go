@@ -21,10 +21,11 @@ type PageFetcher[T any] func(
 	limit int,
 ) (PagedResponse[T], error)
 
+const engineMaxPageLimit = 100
+
 // Paginate iterates all resources from a paged endpoint using the provided PageFetcher.
 func Paginate[T any]( //revive:disable:cognitive-complexity
 	ctx context.Context,
-	limit int,
 	fetchPage PageFetcher[T],
 ) iter.Seq2[T, error] {
 	return func(yield func(T, error) bool) {
@@ -38,7 +39,7 @@ func Paginate[T any]( //revive:disable:cognitive-complexity
 				return
 			}
 
-			resp, err := fetchPage(ctx, page, limit)
+			resp, err := fetchPage(ctx, page, engineMaxPageLimit)
 			if err != nil {
 				yield(zero, err)
 				return
