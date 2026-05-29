@@ -53,6 +53,8 @@ linters:
         arguments: [ 140 ]
       - name: redundant-import-alias
         disabled: true
+      - name: cognitive-complexity
+        arguments: [ 12 ]
 
   exclusions:
     rules:
