@@ -149,6 +149,23 @@ The client is configured using functional options:
 - WithBaseURL(string) - if omitted 'https://engine.anexia-it.com' will be used
 - WithHttpClient(*http.Client) - if omitted the default `http.Client` will be used
 
+## Pagination
+
+Pagination is achieved by leveraging go's new standard library iter.Seq2 type.
+The `pagination.Paginate` function accepts any `pagination.PageFetcher` which is provided by any client that returns paged data.
+
+Example of iterating over all dev clusters:
+```go
+clusters := paging.Paginate(ctx, client.V1().DevClusters().ListPageFetcher(v1.ClusterListParams{}))
+for cluster, err := range clusters {
+    if err != nil {
+        panic(err)
+    }
+
+    fmt.Printf("%+v\n", cluster)
+}
+```
+
 ## Error handling
 
 TBD
